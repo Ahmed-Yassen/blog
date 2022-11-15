@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import CreateUserDto from 'src/authentication/dto/create-user.dto';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 import UserNotFoundException from './exception/userNotFoundException';
 import User from './user.entity';
 
@@ -30,5 +31,22 @@ export class UsersService {
       return user;
     }
     throw new UserNotFoundException();
+  }
+
+  async changePassword(
+    currentPassword: string,
+    newPassword: string,
+    user: User,
+  ) {
+    const correctCurrentPassword = await bcrypt.compare(
+      currentPassword,
+      user.password,
+    );
+    if (!correctCurrentPassword)
+      throw new BadRequestException('incorrect current password');
+
+    const newPasswordHashed = await bcrypt.hash(newPassword, 10);
+    user.password = newPasswordHashed;
+    await this.usersRepository.save(user);
   }
 }

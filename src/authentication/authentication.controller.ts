@@ -1,12 +1,12 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   Post,
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
 import { AuthenticationService } from './authentication.service';
 import CreateUserDto from './dto/create-user.dto';
 import SigninDto from './dto/sign-in.dto';
