@@ -6,11 +6,14 @@ class User {
   @PrimaryGeneratedColumn()
   public id?: number;
 
-  @Column({ unique: true })
-  public email: string;
+  @Column()
+  public firstName: string;
 
   @Column()
-  public name: string;
+  public lastName: string;
+
+  @Column({ unique: true })
+  public email: string;
 
   @Column()
   @Exclude()
