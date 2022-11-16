@@ -38,6 +38,7 @@ export class Post {
 
   @OneToMany(() => Comment, (comment: Comment) => comment.post, {
     cascade: true,
+    eager: true,
   })
   public comments: Comment[];
 

@@ -24,7 +24,6 @@ export class Comment {
   public author: User;
 
   @ManyToOne(() => Post, (post: Post) => post.comments, {
-    eager: true,
     nullable: false,
   })
   public post: Post;

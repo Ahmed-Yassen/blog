@@ -12,5 +12,14 @@ export class CommentsService {
   constructor(
     @InjectRepository(Comment)
     private readonly commentsRepository: Repository<Comment>,
+    private readonly postsService: PostsService,
   ) {}
+
+  async createComment(author: User, postId: number, content: string) {
+    const post = await this.postsService.getPostById(postId);
+    if (!post) throw new PostNotFoundException();
+
+    const comment = this.commentsRepository.create({ author, post, content });
+    return this.commentsRepository.save(comment);
+  }
 }
