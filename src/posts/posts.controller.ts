@@ -48,7 +48,7 @@ export class PostsController {
   }
 
   @Get('my-posts')
-  getPosts(@Req() request) {
+  getMyPosts(@Req() request) {
     return this.postsService.getUsersPosts(request.user.id);
   }
 

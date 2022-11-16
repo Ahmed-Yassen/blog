@@ -1,45 +1,33 @@
-import Category from 'src/categories/category.entity';
-import { Comment } from 'src/comments/comment.entity';
+import { Post } from 'src/posts/post.entity';
 import User from 'src/users/user.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
-export class Post {
+export class Comment {
   @PrimaryGeneratedColumn()
-  public id: number;
+  id: number;
 
   @Column()
-  public title: string;
+  content: string;
 
-  @Column()
-  public content: string;
-
-  @ManyToOne(() => User, (author: User) => author.posts, {
+  @ManyToOne(() => User, (author: User) => author.comments, {
     eager: true,
     nullable: false,
   })
   public author: User;
 
-  @ManyToMany(() => Category, (category: Category) => category.posts, {
+  @ManyToOne(() => Post, (post: Post) => post.comments, {
+    eager: true,
     nullable: false,
   })
-  @JoinTable()
-  public categories: Category[];
-
-  @OneToMany(() => Comment, (comment: Comment) => comment.post, {
-    cascade: true,
-  })
-  public comments: Comment[];
+  public post: Post;
 
   @CreateDateColumn({
     type: 'timestamp',

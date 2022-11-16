@@ -1,4 +1,5 @@
 import { Exclude } from 'class-transformer';
+import { Comment } from 'src/comments/comment.entity';
 import { Post } from 'src/posts/post.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -32,6 +33,11 @@ class User {
     cascade: true,
   })
   public posts: Post[];
+
+  @OneToMany(() => Comment, (comment: Comment) => comment.author, {
+    cascade: true,
+  })
+  public comments: Comment[];
 }
 
 export default User;
