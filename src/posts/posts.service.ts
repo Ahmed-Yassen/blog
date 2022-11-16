@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoriesService } from 'src/categories/categories.service';
+import CategoryNotFoundException from 'src/categories/exception/categoryNotFoundException';
 import UserNotFoundException from 'src/users/exception/userNotFoundException';
 import User from 'src/users/user.entity';
 import { UsersService } from 'src/users/users.service';
@@ -68,5 +69,12 @@ export class PostsService {
     const user = await this.usersService.getById(userId);
     if (!user) throw new UserNotFoundException();
     return this.postsRepository.find({ where: { author: { id: userId } } });
+  }
+
+  async getPostsInCategory(categoryId: number) {
+    const category = await this.categoriesService.getCategoryById(categoryId);
+    if (!category) throw new CategoryNotFoundException();
+
+    return category.posts;
   }
 }

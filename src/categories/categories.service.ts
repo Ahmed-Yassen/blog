@@ -20,6 +20,10 @@ export class CategoriesService {
     return this.categoriesRepository.find();
   }
 
+  getCategoryById(id: number) {
+    return this.categoriesRepository.findOne({ where: { id } });
+  }
+
   async createCategory(name: string) {
     try {
       let category = this.categoriesRepository.create({ name });

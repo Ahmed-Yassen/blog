@@ -56,4 +56,9 @@ export class PostsController {
   getSpecificUserPosts(@Param('id', ParseIntPipe) id: number) {
     return this.postsService.getUsersPosts(id);
   }
+
+  @Get('category/:id')
+  getPostsInCategory(@Param('id', ParseIntPipe) id: number) {
+    return this.postsService.getPostsInCategory(id);
+  }
 }
