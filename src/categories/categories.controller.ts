@@ -9,11 +9,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import JwtAuthenticationGuard from 'src/authentication/jwt-authentication.guard';
-import { IsAdminGuard } from 'src/guards/isAdmin.guard';
+import { AdminGuard } from 'src/guards/admin.guard';
 import { CategoriesService } from './categories.service';
 import CreateCategoryDto from './dto/create-category.dto';
 
-@UseGuards(JwtAuthenticationGuard, IsAdminGuard)
+@UseGuards(JwtAuthenticationGuard, AdminGuard)
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}

@@ -69,4 +69,9 @@ export class UsersService {
     user.password = newPasswordHashed;
     await this.usersRepository.save(user);
   }
+
+  async deleteUser(id: number) {
+    const deletedUser = await this.usersRepository.delete(id);
+    if (!deletedUser.affected) throw new UserNotFoundException();
+  }
 }
