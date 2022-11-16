@@ -15,7 +15,6 @@ export default class Category {
   name: string;
 
   @BeforeInsert()
-  @BeforeUpdate()
   toLowerCase() {
     this.name = this.name.toLowerCase();
   }
