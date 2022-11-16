@@ -14,7 +14,6 @@ Technologies Used: Node.js - Nest.js - TypeScript - PostgresSQL - TypeORM.
 - Authenticate users with JWT & Cookies using Passport JWT Strategy.
 - Hash Passwords with bcrypt.
 - Authorize Routes with Guards.
-- Handle Errors with Exception Filters.
 
 ## Environment Variables
 
