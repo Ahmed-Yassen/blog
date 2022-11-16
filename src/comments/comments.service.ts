@@ -6,6 +6,7 @@ import User from 'src/users/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
 import { Comment } from './comment.entity';
+import CommentNotFoundException from './exception/commentNotFoundException';
 
 @Injectable()
 export class CommentsService {
@@ -21,5 +22,18 @@ export class CommentsService {
 
     const comment = this.commentsRepository.create({ author, post, content });
     return this.commentsRepository.save(comment);
+  }
+
+  async updateComment(authorId: number, commentId: number, content: string) {
+    //MAKE SURE AUTHOR OF THE COMMENT IS AUDTING IT
+    const comment = await this.commentsRepository.findOne({
+      where: { id: commentId, author: { id: authorId } },
+    });
+    if (!comment) throw new CommentNotFoundException();
+
+    await this.commentsRepository.update(commentId, {
+      content,
+    });
+    return this.commentsRepository.findOne({ where: { id: commentId } });
   }
 }
