@@ -25,7 +25,6 @@ export class CommentsService {
   }
 
   async updateComment(authorId: number, commentId: number, content: string) {
-    //MAKE SURE AUTHOR OF THE COMMENT IS AUDTING IT
     const comment = await this.commentsRepository.findOne({
       where: { id: commentId, author: { id: authorId } },
     });
@@ -35,5 +34,19 @@ export class CommentsService {
       content,
     });
     return this.commentsRepository.findOne({ where: { id: commentId } });
+  }
+
+  async deleteComment(id: number) {
+    const deleteResult = await this.commentsRepository.delete(id);
+    if (!deleteResult.affected) throw new CommentNotFoundException();
+  }
+
+  async deleteCommentAsUser(authorId: number, commentId: number) {
+    const comment = await this.commentsRepository.findOne({
+      where: { id: commentId, author: { id: authorId } },
+    });
+    if (!comment) throw new CommentNotFoundException();
+
+    await this.commentsRepository.delete(commentId);
   }
 }

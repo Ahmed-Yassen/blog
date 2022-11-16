@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Param,
   ParseIntPipe,
   Patch,
@@ -28,7 +29,7 @@ export class CommentsController {
   }
 
   @Patch(':id')
-  updatePost(
+  updateComment(
     @Body() body: UpdateCommentDto,
     @Param('id', ParseIntPipe) id: number,
     @Req() request,
@@ -38,5 +39,13 @@ export class CommentsController {
       id,
       body.content,
     );
+  }
+
+  @Delete(':id')
+  deleteComment(@Param('id', ParseIntPipe) id: number, @Req() request) {
+    if (request.user.role === 'admin')
+      return this.commentsService.deleteComment(id);
+
+    return this.commentsService.deleteCommentAsUser(request.user.id, id);
   }
 }
