@@ -77,4 +77,8 @@ export class PostsService {
 
     return category.posts;
   }
+
+  async getNewestPosts() {
+    return this.postsRepository.find({ order: { createdAt: 'DESC' } });
+  }
 }

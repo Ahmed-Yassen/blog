@@ -42,17 +42,17 @@ export class PostsController {
     return this.postsService.deletePostAsUser(id, request.user);
   }
 
-  @Get(':id')
+  @Get('/find/:id')
   getPostById(@Param('id', ParseIntPipe) id: number) {
     return this.postsService.getPostById(id);
   }
 
-  @Get()
+  @Get('my-posts')
   getPosts(@Req() request) {
     return this.postsService.getUsersPosts(request.user.id);
   }
 
-  @Get('user-id/:id')
+  @Get('user/:id')
   getSpecificUserPosts(@Param('id', ParseIntPipe) id: number) {
     return this.postsService.getUsersPosts(id);
   }
@@ -60,5 +60,10 @@ export class PostsController {
   @Get('category/:id')
   getPostsInCategory(@Param('id', ParseIntPipe) id: number) {
     return this.postsService.getPostsInCategory(id);
+  }
+
+  @Get('newest')
+  getNewestPosts() {
+    return this.postsService.getNewestPosts();
   }
 }
