@@ -1,9 +1,9 @@
 import {
+  ArrayNotEmpty,
   IsArray,
   IsNotEmpty,
   IsOptional,
   IsString,
-  MinLength,
 } from 'class-validator';
 
 export default class UpdatePostDto {
@@ -19,6 +19,6 @@ export default class UpdatePostDto {
 
   @IsOptional()
   @IsArray()
-  @MinLength(1)
+  @ArrayNotEmpty()
   categories: [];
 }

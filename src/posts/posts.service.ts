@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoriesService } from 'src/categories/categories.service';
-import CategoryNotFoundException from 'src/categories/exception/categoryNotFoundException';
 import User from 'src/users/user.entity';
 import { Repository } from 'typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -53,5 +52,12 @@ export class PostsService {
     });
     if (!post) throw new PostNotFoundException();
     await this.postsRepository.delete(id);
+  }
+
+  async getPostById(id: number) {
+    const post = await this.postsRepository.findOne({ where: { id } });
+    if (!post) throw new PostNotFoundException();
+
+    return post;
   }
 }

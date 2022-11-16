@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   ParseIntPipe,
   Patch,
@@ -39,5 +40,10 @@ export class PostsController {
       return this.postsService.deletePostAsAdmin(id);
 
     return this.postsService.deletePostAsUser(id, request.user);
+  }
+
+  @Get(':id')
+  getPostById(@Param('id', ParseIntPipe) id: number) {
+    return this.postsService.getPostById(id);
   }
 }
