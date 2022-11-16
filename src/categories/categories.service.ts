@@ -27,4 +27,17 @@ export class CategoriesService {
       throw new InternalServerErrorException();
     }
   }
+
+  async updateCategory(id: number, name: string) {
+    try {
+      await this.categoriesRepository.update(id, {
+        name: name.toLowerCase(),
+      });
+    } catch (error) {
+      if (error?.code === PostgresErrorCode.UniqueViolation)
+        throw new BadRequestException('category with that name already exists');
+
+      throw new InternalServerErrorException();
+    }
+  }
 }
