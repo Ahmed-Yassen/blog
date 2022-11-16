@@ -30,9 +30,10 @@ export class CategoriesService {
 
   async updateCategory(id: number, name: string) {
     try {
-      await this.categoriesRepository.update(id, {
-        name: name.toLowerCase(),
-      });
+      let category = await this.categoriesRepository.findOne({ where: { id } });
+      category.name = name;
+      category = await this.categoriesRepository.save(category);
+      return category;
     } catch (error) {
       if (error?.code === PostgresErrorCode.UniqueViolation)
         throw new BadRequestException('category with that name already exists');
@@ -40,4 +41,6 @@ export class CategoriesService {
       throw new InternalServerErrorException();
     }
   }
+
+  async deleteCategory(id: number) {}
 }
