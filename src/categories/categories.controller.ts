@@ -6,10 +6,14 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import JwtAuthenticationGuard from 'src/authentication/jwt-authentication.guard';
+import { IsAdminGuard } from 'src/guards/isAdmin.guard';
 import { CategoriesService } from './categories.service';
 import CreateCategoryDto from './dto/create-category.dto';
 
+@UseGuards(JwtAuthenticationGuard, IsAdminGuard)
 @Controller('categories')
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}

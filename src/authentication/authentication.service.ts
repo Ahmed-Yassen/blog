@@ -20,13 +20,8 @@ export class AuthenticationService {
   ) {}
 
   public async signup(body: CreateUserDto) {
-    const hashedPassword = await bcrypt.hash(body.password, 10);
-
     try {
-      const createdUser = await this.usersService.create({
-        ...body,
-        password: hashedPassword,
-      });
+      const createdUser = await this.usersService.create(body);
       return createdUser;
     } catch (error) {
       if (error?.code === PostgresErrorCode.UniqueViolation)

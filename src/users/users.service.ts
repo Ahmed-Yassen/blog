@@ -12,7 +12,27 @@ export class UsersService {
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) {}
 
+  //- create an admin account only if it doesn't exist
+  async onModuleInit() {
+    const email = process.env.ADMIN_EMAIL;
+    const password = process.env.ADMIN_PASSWORD;
+
+    try {
+      await this.getByEmail(email);
+    } catch (error) {
+      await this.create({
+        email,
+        password,
+        firstName: 'Admin',
+        lastName: 'Admin',
+        role: 'admin',
+      } as CreateUserDto);
+    }
+  }
+
   async create(userData: CreateUserDto) {
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    userData.password = hashedPassword;
     const newUser = this.usersRepository.create(userData);
     await this.usersRepository.save(newUser);
     return newUser;
