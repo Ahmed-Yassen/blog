@@ -41,4 +41,17 @@ export class PostsService {
       where: { author: { id: author.id }, id: postId },
     });
   }
+
+  async deletePostAsAdmin(id: number) {
+    const deletedPost = await this.postsRepository.delete(id);
+    if (!deletedPost.affected) throw new PostNotFoundException();
+  }
+
+  async deletePostAsUser(id: number, author: User) {
+    const post = await this.postsRepository.findOne({
+      where: { author: { id: author.id }, id },
+    });
+    if (!post) throw new PostNotFoundException();
+    await this.postsRepository.delete(id);
+  }
 }

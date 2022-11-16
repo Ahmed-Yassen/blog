@@ -1,10 +1,4 @@
-import {
-  IsArray,
-  IsNotEmpty,
-  IsNumberString,
-  IsString,
-  MinLength,
-} from 'class-validator';
+import { ArrayNotEmpty, IsArray, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreatePostDto {
   @IsString()
@@ -16,6 +10,6 @@ export class CreatePostDto {
   content: string;
 
   @IsArray()
-  @MinLength(1)
+  @ArrayNotEmpty()
   categories: [];
 }

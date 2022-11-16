@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Param,
   ParseIntPipe,
   Patch,
@@ -16,11 +17,11 @@ import { PostsService } from './posts.service';
 @UseGuards(JwtAuthenticationGuard)
 @Controller('posts')
 export class PostsController {
-  constructor(private readonly postsServic: PostsService) {}
+  constructor(private readonly postsService: PostsService) {}
 
   @Post()
   createPost(@Body() body: CreatePostDto, @Req() request) {
-    return this.postsServic.createPost(body, request.user);
+    return this.postsService.createPost(body, request.user);
   }
 
   @Patch(':id')
@@ -29,6 +30,14 @@ export class PostsController {
     @Body() body: updatePostDto,
     @Req() request,
   ) {
-    return this.postsServic.updatePost(id, body, request.user);
+    return this.postsService.updatePost(id, body, request.user);
+  }
+
+  @Delete(':id')
+  deletePost(@Param('id', ParseIntPipe) id: number, @Req() request) {
+    if (request.user.role === 'admin')
+      return this.postsService.deletePostAsAdmin(id);
+
+    return this.postsService.deletePostAsUser(id, request.user);
   }
 }
