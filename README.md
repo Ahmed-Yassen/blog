@@ -1,73 +1,253 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Blog App
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+A Node RESTful API that manages a blog's users, posts, categories & comments.
 
-## Description
+Technologies Used: Node.js - Nest.js - TypeScript - PostgresSQL - TypeORM.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+## Features
+- Connect to the Database, Perform CRUD Operations & Create Relationships using TypeORM.
+- Create Environment Variables using Config Module.
+- Validate Data using Validation Pipes & DTOs.
+- Serialize Returned Data using Interceptors & DTOs.
+- Authenticate users with JWT & Cookies using Passport JWT Strategy.
+- Hash Passwords with bcrypt.
+- Authorize Routes with Guards.
+- Handle Errors with Exception Filters.
 
-```bash
-$ npm install
-```
+## Environment Variables
 
-## Running the app
+To run this project, you will need to create a .env file in the root directory of the project
 
-```bash
-# development
-$ npm run start
+`JWT_SECRET`
+`JWT_EXPIRATION_TIME`
+`POSTGRES_USER`
+`POSTGRES_PASSWORD`
+`POSTGRES_DB`
+`ADMIN_EMAIL`
+`ADMIN_PASSWORD`
 
-# watch mode
-$ npm run start:dev
 
-# production mode
-$ npm run start:prod
-```
+## Run Locally
 
-## Test
+Clone the project
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+  git clone https://github.com/Ahmed-Yassen/blog.git
 ```
 
-## Support
+Go to the project directory
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+  cd blog
+```
 
-## Stay in touch
+Install dependencies
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+  npm install
+```
 
-## License
+Start the server
 
-Nest is [MIT licensed](LICENSE).
+```bash
+  npm run start
+```
+
+## API Documentation
+
+### **-- Auth Routes --**
+
+#### Create a new user
+
+```http
+  POST /api/auth/sign-up/
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `email` | `string` | **Required**.  |
+| `password` | `string` | **Required**. should be atleast 8 characters. |
+| `firstName` | `string` | **Required**.  |
+| `lastName` | `string` | **Required**. |
+
+#### Log user in
+
+```http
+  POST /api/auth/sign-in
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `email` | `string` | **Required**.  |
+| `password` | `string` | **Required**. |
+
+#### Log user out (*Requires Auth*)
+
+```http
+  POST /api/auth/sign-out
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+
+
+### **-- Users Routes --**
+
+#### Get current logged-in user profile (*Requires Auth*)
+
+```http
+  GET /api/users/profile
+```
+
+
+#### Change password for current logged-in user (*Requires Auth*)
+
+```http
+  POST /api/users/change-password  
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `currentPassword` | `string` | **Required**.|
+| `newPassword` | `string` | **Required**.|
+
+#### Remove user account (*Requires Auth & Role: admin*)
+
+```http
+  DELETE /api/users/:id
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `number` | **Required**.  user id|
+
+### **-- Categories Routes --** (*Requires Auth & Role: admin*)
+
+#### Create a category 
+```http
+  POST /api/categories
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `name` | `string` | **Required**.  |
+
+#### Get all categories 
+```http
+  GET /api/categories
+```
+#### Update a category
+```http
+  PATCH /api/categories/:id
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `number` | **Required**.  |
+| `name` | `string` | **Required**.  |
+
+#### Remove a category
+```http
+  DELETE /api/categories/:id
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `number` | **Required**.  |
+
+
+### **-- Posts Routes --** (*Requires Auth*)
+
+#### Create a post
+```http
+  POST /api/posts
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `title` | `string` | **Required**.  |
+| `content` | `string` | **Required**.  |
+| `categories` | `array[{id:number}]` | **Required**. an array that holds objects that contain the category id of each category of the post  |
+
+#### Update a post
+```http
+  PATCH /api/posts/:id
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `number` | **Required**.  |
+| `content` | `string` | **Optional**.  |
+| `title` | `string` | **Optional**.  |
+| `categories` | `array[{id:number}]` | **Optional**.  |
+
+#### Remove a post
+- Can remove only my posts when role is user
+- Can remove any post when role is admin
+
+```http
+  DELETE /api/patients/:id 
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `number` | **Required**.  |
+
+#### Get post by id
+```http
+  GET /api/posts/find/:id
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `number` | **Required**. id of the post to find  |
+
+
+#### Get my posts
+```http
+  GET /api/posts/my-posts
+```
+#### Get a user's posts
+```http
+  GET /api/posts/user/:id
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `number` | **Required**. id of a user to find their posts  |
+
+
+#### Get posts in a specific category
+```http
+  GET /api/posts/category/:id
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `number` | **Required**. id of the category.  |
+
+#### Get newest posts
+```http
+  GET /api/posts/newest
+```
+
+### **-- Comments Routes --** (*Requires Auth*)
+
+#### Create a comment 
+```http
+  POST /api/comments
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `content` | `string` | **Required**.|
+| `postId` | `number` | **Required**.|
+
+#### Update a comment
+```http
+  PATCH /api/comments/:id
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `number` | **Required**.|
+| `content` | `string` | **Required**.|
+
+#### Remove a comment
+```http
+  DELETE /api/comments/:id
+```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `id` | `number` | **Required**.|
+
+## Feedback
+
+If you have any feedback, please reach out to me at ahmed.ibrahim.yassen@gmail.com
