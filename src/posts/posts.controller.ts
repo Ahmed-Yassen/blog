@@ -46,4 +46,14 @@ export class PostsController {
   getPostById(@Param('id', ParseIntPipe) id: number) {
     return this.postsService.getPostById(id);
   }
+
+  @Get()
+  getPosts(@Req() request) {
+    return this.postsService.getUsersPosts(request.user.id);
+  }
+
+  @Get('user-id/:id')
+  getSpecificUserPosts(@Param('id', ParseIntPipe) id: number) {
+    return this.postsService.getUsersPosts(id);
+  }
 }

@@ -1,7 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoriesService } from 'src/categories/categories.service';
+import UserNotFoundException from 'src/users/exception/userNotFoundException';
 import User from 'src/users/user.entity';
+import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostNotFoundException } from './exception/postNotFoundException';
@@ -12,6 +14,7 @@ export class PostsService {
   constructor(
     @InjectRepository(Post) private readonly postsRepository: Repository<Post>,
     private readonly categoriesService: CategoriesService,
+    private readonly usersService: UsersService,
   ) {}
 
   async createPost(postAttrs: CreatePostDto, author: User) {
@@ -59,5 +62,11 @@ export class PostsService {
     if (!post) throw new PostNotFoundException();
 
     return post;
+  }
+
+  async getUsersPosts(userId: number) {
+    const user = await this.usersService.getById(userId);
+    if (!user) throw new UserNotFoundException();
+    return this.postsRepository.find({ where: { author: { id: userId } } });
   }
 }
