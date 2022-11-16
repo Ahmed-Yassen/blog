@@ -18,6 +18,14 @@ class User {
   @Column()
   @Exclude()
   public password: string;
+
+  @Column({
+    type: 'enum',
+    enum: ['admin', 'user'],
+    default: 'user',
+  })
+  @Exclude()
+  public role: string;
 }
 
 export default User;
