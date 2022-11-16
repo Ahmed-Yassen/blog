@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Post } from 'src/posts/post.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 class User {
@@ -26,6 +27,11 @@ class User {
   })
   @Exclude()
   public role: string;
+
+  @OneToMany(() => Post, (post: Post) => post.author, {
+    cascade: true,
+  })
+  public posts: Post[];
 }
 
 export default User;

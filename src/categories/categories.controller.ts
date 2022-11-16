@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   ParseIntPipe,
   Patch,
@@ -21,6 +22,11 @@ export class CategoriesController {
   @Post()
   createCategory(@Body() body: CreateCategoryDto) {
     return this.categoriesService.createCategory(body.name);
+  }
+
+  @Get()
+  getCategories() {
+    return this.categoriesService.getAllCategories();
   }
 
   @Patch(':id')

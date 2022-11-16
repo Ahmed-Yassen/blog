@@ -16,6 +16,10 @@ export class CategoriesService {
     private readonly categoriesRepository: Repository<Category>,
   ) {}
 
+  getAllCategories() {
+    return this.categoriesRepository.find();
+  }
+
   async createCategory(name: string) {
     try {
       let category = this.categoriesRepository.create({ name });

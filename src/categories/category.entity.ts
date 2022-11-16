@@ -1,8 +1,10 @@
+import { Post } from 'src/posts/post.entity';
 import {
   BeforeInsert,
   BeforeUpdate,
   Column,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -18,4 +20,10 @@ export default class Category {
   toLowerCase() {
     this.name = this.name.toLowerCase();
   }
+
+  @ManyToMany(() => Post, (post: Post) => post.categories, {
+    cascade: true,
+    eager: true,
+  })
+  public posts: Post[];
 }
