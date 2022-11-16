@@ -24,10 +24,13 @@ export class Post {
 
   @ManyToOne(() => User, (author: User) => author.posts, {
     eager: true,
+    nullable: false,
   })
   public author: User;
 
-  @ManyToMany(() => Category, (category: Category) => category.posts)
+  @ManyToMany(() => Category, (category: Category) => category.posts, {
+    nullable: false,
+  })
   @JoinTable()
   public categories: Category[];
 

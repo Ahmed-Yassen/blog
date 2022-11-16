@@ -24,6 +24,7 @@ export default class Category {
   @ManyToMany(() => Post, (post: Post) => post.categories, {
     cascade: true,
     eager: true,
+    nullable: false,
   })
   public posts: Post[];
 }

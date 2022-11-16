@@ -5,6 +5,7 @@ import CategoryNotFoundException from 'src/categories/exception/categoryNotFound
 import User from 'src/users/user.entity';
 import { Repository } from 'typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
+import { PostNotFoundException } from './exception/postNotFoundException';
 import { Post } from './post.entity';
 
 @Injectable()
@@ -27,5 +28,17 @@ export class PostsService {
     });
     const post = this.postsRepository.create({ ...postAttrs, author });
     return this.postsRepository.save(post);
+  }
+
+  async updatePost(postId: number, postAttrs: Partial<Post>, author: User) {
+    const post = await this.postsRepository.findOne({
+      where: { author: { id: author.id }, id: postId },
+    });
+    if (!post) throw new PostNotFoundException();
+
+    await this.postsRepository.update(postId, postAttrs);
+    return this.postsRepository.findOne({
+      where: { author: { id: author.id }, id: postId },
+    });
   }
 }

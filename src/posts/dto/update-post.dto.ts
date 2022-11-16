@@ -1,20 +1,23 @@
 import {
   IsArray,
   IsNotEmpty,
-  IsNumberString,
+  IsOptional,
   IsString,
   MinLength,
 } from 'class-validator';
 
-export class CreatePostDto {
+export default class UpdatePostDto {
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   title: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   content: string;
 
+  @IsOptional()
   @IsArray()
   @MinLength(1)
   categories: [];
